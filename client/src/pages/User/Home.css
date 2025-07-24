@@ -1,0 +1,45 @@
+.BookingCard{
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 2rem 2.5rem;
+    margin: 2rem auto;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.BookingCard > h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.BookingCard > label {
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 0.3rem;
+}
+
+#bookingInput, select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 0.3rem;
+    background: #f9f9f9;
+    transition: border 0.2s;
+}
+
+#bookingInput:focus, select:focus {
+    border: 1.5px solid #007bff;
+    outline: none;
+    background: #fff;
+}
+.review-link:hover {
+    color: #2f60c2; 
+    text-shadow: 0 0 8px #2f60c2, 0 0 2px #fff;
+    transition: color 0.2s, text-shadow 0.2s;
+}
