@@ -12,12 +12,15 @@ const userSchema = z.object({
     email:z.string().email(),
     password:z.string().min(8, "Password must be atleast 8 characters"),
     confirmPassword:z.string().min(8, "Confirm password must same as Password"),
+    adminCode:z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Paawords must match",
     path: ["confirmPassword"],
 });
 
 export default function Register () {
+    const [showAdminCode, setShowAdminCode] = useState(false);
+    
     const {register,
         handleSubmit,
         formState: { errors, isSubmitting},
@@ -30,12 +33,44 @@ export default function Register () {
 
     const onSubmit = async (data) => {
        try {
-            const { confirmPassword, ...userData } = data;
-            const response = await axios.post("http://localhost:8081/groommate", userData);
-            console.log("Registration successful:", response.data);
-            navigate("/");
+            const { confirmPassword, adminCode, ...userData } = data;
+            
+            // Check if admin code is provided
+            if (adminCode && adminCode.trim() !== "") {
+                // Register as admin
+                const response = await axios.post("http://localhost:8081/admin/register", {
+                    ...userData,
+                    adminCode: adminCode
+                });
+                
+                if (response.data.success) {
+                    console.log("Admin registration successful:", response.data);
+                    alert("Admin registration successful! You can now login with your credentials.");
+                    navigate("/");
+                } else {
+                    throw new Error("Registration failed");
+                }
+            } else {
+                // Register as regular user
+                const response = await axios.post("http://localhost:8081/groommate", userData);
+                
+                if (response.data.success) {
+                    console.log("User registration successful:", response.data);
+                    alert("Registration successful! You can now login with your credentials.");
+                    navigate("/");
+                } else {
+                    throw new Error("Registration failed");
+                }
+            }
     }   catch (error) {
            console.error("Registration failed:", error.response?.data || error.message);
+           if (error.response?.status === 403) {
+               alert("Invalid admin code. Please check your admin code and try again.");
+           } else if (error.response?.status === 500) {
+               alert("Database error. Please try again later.");
+           } else {
+               alert("Registration failed. Please check your information and try again.");
+           }
     }
     }
 
@@ -67,11 +102,42 @@ export default function Register () {
                         {errors.confirmPassword && (
                             <div className='errormsg'>{errors.confirmPassword.message}</div>
                         )}
-                            <button disabled={isSubmitting} id="Login/Register">{isSubmitting ? "Loading..." : "Register"}</button>
+                    
+                    <div style={{ margin: "15px 0" }}>
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                checked={showAdminCode}
+                                onChange={(e) => setShowAdminCode(e.target.checked)}
+                                style={{ marginRight: "8px" }}
+                            />
+                            Register as Admin
+                        </label>
+                    </div>
+
+                    {showAdminCode && (
+                        <>
+                            <label htmlFor="adminCode">Admin Code:</label>
+                            <input 
+                                {...register("adminCode")} 
+                                type="password" 
+                                name="adminCode" 
+                                placeholder="Enter admin code"
+                            />
+                            {errors.adminCode && (
+                                <div className='errormsg'>{errors.adminCode.message}</div>
+                            )}
+                        </>
+                    )}
+
+                    <button disabled={isSubmitting} id="Login/Register">
+                        {isSubmitting ? "Loading..." : (showAdminCode ? "Register as Admin" : "Register")}
+                    </button>
                 </form>
                     {errors.root && <div className='errormsg'>{errors.root.message}</div>}
                     <p>
-                        Returning user?<button type="button" onClick={() => navigate("/")}
+                        Returning user?
+                        <button type="button" onClick={() => navigate("/")}
                             style={{
                             background: "none",
                             border: "none",

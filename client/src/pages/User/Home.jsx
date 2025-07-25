@@ -4,6 +4,7 @@ import './Home.css';
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import NavComponent from "./NavComponent";
 
 export default function Home() {
     const [form, setForm] = useState({
@@ -52,6 +53,7 @@ export default function Home() {
     return (
         <>
             <Header />
+            <NavComponent />
             <h1>BookingPage</h1>
             <form className="BookingCard" onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
                 <label>

@@ -53,7 +53,7 @@ export default function AdminDashboard(){
       }}>
         <AdminCard 
           title="User Management" 
-          link="/admin/users"
+          link="/admin/UserManagement"
           icon={<UsersIcon />}
         />
         <AdminCard

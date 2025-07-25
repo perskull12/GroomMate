@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './login.css';
 import {useForm} from 'react-hook-form'
 import {z} from 'zod'
@@ -12,6 +13,8 @@ const userSchema = z.object({
 })
 
 export default function Login() {
+    const [loginError, setLoginError] = useState('');
+    
     const {register,
         handleSubmit,
         formState: { errors, isSubmitting},
@@ -22,29 +25,47 @@ export default function Login() {
         resolver: zodResolver(userSchema),
     })
 
-         // Example usage in LoginForm.jsx
     const onSubmit = async (data) => {
         try {
+            setLoginError(''); // Clear previous errors
             const response = await axios.post("http://localhost:8081/login", {
                 email: data.email,
                 password: data.password
             });
-            // Handle successful login (e.g., save user, redirect)
-            console.log("Login successful:", response.data);
-            navigate("/home")
+            
+            if (response.data.success) {
+                const { user, role } = response.data;
+                
+                // Store user info in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                console.log("Login successful:", response.data);
+                
+                // Role-based routing
+                if (role === 'admin') {
+                    navigate("/admin/dashboard");
+                } else {
+                    navigate("/home");
+                }
+            }
         } catch (error) {
-            // Handle login error
             console.error("Login failed:", error.response?.data || error.message);
+            if (error.response?.status === 401) {
+                setLoginError("Invalid email or password. Please check your credentials.");
+            } else {
+                setLoginError("Login failed. Please try again.");
+            }
         }
-};
+    };
 
     const navigate = useNavigate();
 
     return(
         <>
-            <Header />  {/* Add Header component here */}
+            <Header />
             <section className="login-container">
                 <h1>Login Form</h1>
+                
                 <form onSubmit={handleSubmit(onSubmit)} id="LoginForm">
                     <label htmlFor="email">Email:</label>
                     <input 
@@ -66,7 +87,7 @@ export default function Login() {
                     {errors.password && (
                         <div className='errormsg'>{errors.password.message}</div>
                     )}
-                    
+                        {loginError && <div className="errormsg">{loginError}</div>}
                     <button 
                         disabled={isSubmitting} 
                         id="Login/Register"

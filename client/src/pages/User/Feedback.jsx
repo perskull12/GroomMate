@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./Header";
+import NavComponent from "./NavComponent";
 
 export default function Feedback() {
     const [reviews, setReviews] = useState([]);
@@ -23,6 +24,7 @@ export default function Feedback() {
     return (
             <>
                 <Header />
+                <NavComponent />
                 <section style={{ maxWidth: 600, margin: "2rem auto", background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "2rem" }}>
                     <h2 style={{ textAlign: "center" }}>User Feedback</h2>
                     {loading ? (

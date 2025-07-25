@@ -19,24 +19,26 @@ app.post('/groommate', (req, res) => {
         req.body.username,
         req.body.email,
         req.body.password
-    ]
-    db.query(sql,[values], (err, data) => {
+    ];
+    db.query(sql, values, (err, data) => {
         if(err) {
-            return res.json("Error");
+            console.error("MySQL Error:", err);
+            return res.status(500).json({ error: "Database error" });
         }
-        return res.json(data);
-    })
+        return res.json({ success: true, data });
+    });
 })
 
 app.post('/admin/register', (req, res) => {
     // Example: check for a secret admin code (for demo purposes)
     const { username, email, password, adminCode } = req.body;
-    if (adminCode !== "YOUR_SECRET_ADMIN_CODE") {
+    if (adminCode !== "Groommate") {
         return res.status(403).json({ error: "Unauthorized" });
     }
     const sql = "INSERT INTO signup (`username`,`email`,`password`,`role`) VALUES (?, ?, ?, 'admin')";
     db.query(sql, [username, email, password], (err, data) => {
         if (err) {
+            console.error("MySQL Error:", err);
             return res.status(500).json({ error: "Database error" });
         }
         return res.json({ success: true, data });
@@ -50,28 +52,16 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: "Database error" });
         }
         if (results.length > 0) {
-            // Login successful
-            return res.json({ success: true, user: results[0] });
+            // Login successful - return user with role information
+            const user = results[0];
+            return res.json({ 
+                success: true, 
+                user: user,
+                role: user.role // Include role for frontend routing
+            });
         } else {
             // Invalid credentials
             return res.status(401).json({ success: false, message: "Invalid email or password" });
-        }
-    });
-});
-
-app.post('/admin/login', (req, res) => {
-    const { email, password } = req.body;
-    const sql = "SELECT * FROM signup WHERE email = ? AND password = ? AND role = 'admin'";
-    db.query(sql, [email, password], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: "Database error" });
-        }
-        if (results.length > 0) {
-            // Admin login successful
-            return res.json({ success: true, admin: results[0] });
-        } else {
-            // Invalid credentials or not an admin
-            return res.status(401).json({ success: false, message: "Invalid admin credentials" });
         }
     });
 });
