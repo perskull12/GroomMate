@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";  
+import NavComponent from "./NavComponent";
 
 export default function Review() {
     const [review, setReview] = useState("");
@@ -29,6 +30,7 @@ export default function Review() {
     return (
         <>
             <Header />
+                <NavComponent />
             <section style={{ maxWidth: 400, margin: "2rem auto", background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "2rem" }}>
                 <h2>Leave a Review</h2>
                 {submitted ? (

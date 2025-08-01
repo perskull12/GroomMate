@@ -23,6 +23,7 @@ export default function App() {
                     <Route path="/Notifications" element={<Notifications />} />
                 </Routes>
                 <hr/>
+                <Link to="/Review">Leave a review</Link>
                 <p>Welcome to GroomMate where you can book your barbershop appointments</p>
             </main>
         </BrowserRouter>

@@ -25,38 +25,40 @@ export default function Login() {
         resolver: zodResolver(userSchema),
     })
 
-    const onSubmit = async (data) => {
-        try {
-            setLoginError(''); // Clear previous errors
-            const response = await axios.post("http://localhost:8081/login", {
-                email: data.email,
-                password: data.password
-            });
+        const onSubmit = async (data) => {
+    try {
+        setLoginError(''); // Clear previous errors
+        const response = await axios.post("http://localhost:8081/login", {
+            email: data.email,
+            password: data.password
+        });
+        
+        if (response.data.success) {
+            const { user } = response.data;
             
-            if (response.data.success) {
-                const { user, role } = response.data;
-                
-                // Store user info in localStorage
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                console.log("Login successful:", response.data);
-                
-                // Role-based routing
-                if (role === 'admin') {
-                    navigate("/admin/dashboard");
-                } else {
-                    navigate("/home");
-                }
-            }
-        } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
-            if (error.response?.status === 401) {
-                setLoginError("Invalid email or password. Please check your credentials.");
+            // Set all required localStorage items
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', user.username);
+            
+            console.log("Login successful:", response.data);
+            
+            // Role-based routing
+            if (user.role === 'admin') {
+                navigate("/admin/dashboard");
             } else {
-                setLoginError("Login failed. Please try again.");
+                navigate("/home");
             }
         }
-    };
+    } catch (error) {
+        console.error("Login failed:", error.response?.data || error.message);
+        if (error.response?.status === 401) {
+            setLoginError("Invalid email or password. Please check your credentials.");
+        } else {
+            setLoginError("Login failed. Please try again.");
+        }
+    }
+};
 
     const navigate = useNavigate();
 
