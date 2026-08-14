@@ -62,72 +62,72 @@ export default function AdminDashboard(){
   };
 
   return (
-   <div className="admin-container" style={{ padding: "20px" }}>
-      <h1>Admin Dashboard</h1>
-      
-      {!activeComponent ? (
-        <div className="admin-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "20px",
-          marginTop: "20px"
-        }}>
-          <AdminCard 
-            title="User Management" 
-            icon={<UsersIcon />}
-            onClick={() => handleCardClick('users')}
-          />
-          <AdminCard
-            title="Appointments"
-            icon={<CalendarIcon />}
-            onClick={() => handleCardClick('appointments')}
-          />
-          <AdminCard 
-            title="Analytics"
-            icon={<GraphIcons />}
-            onClick={() => handleCardClick('analytics')}
-          />
-          <AdminCard 
-            title="Services"
-            icon={<ServiceIcon />}
-            onClick={() => handleCardClick('services')}
-          />
-        </div>
-      ) : (
-        <div>
-          <button 
-            onClick={() => setActiveComponent(null)}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              marginBottom: "20px",
-              cursor: "pointer"
-            }}
-          >
-            Back to Dashboard
-          </button>
-          
-          {activeComponent === 'users' && <UserManagement />}
-          {activeComponent === 'appointments' && <AppointmentManagement />}
-          {activeComponent === 'analytics' && <SystemAnalytics />}
-          {activeComponent === 'services' && <ServiceManagement />}
-        </div>
-      )}
+    <div className="admin-container" style={{ padding: "20px" }}>
+        <h1>Admin Dashboard</h1>
+        
+        {!activeComponent ? (
+          <div className="admin-grid" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px",
+            marginTop: "20px"
+          }}>
+            <AdminCard 
+              title="User Management" 
+              icon={<UsersIcon />}
+              onClick={() => handleCardClick('users')}
+            />
+            <AdminCard
+              title="Appointments"
+              icon={<CalendarIcon />}
+              onClick={() => handleCardClick('appointments')}
+            />
+            <AdminCard 
+              title="Analytics"
+              icon={<GraphIcons />}
+              onClick={() => handleCardClick('analytics')}
+            />
+            <AdminCard 
+              title="Services"
+              icon={<ServiceIcon />}
+              onClick={() => handleCardClick('services')}
+            />
+          </div>
+        ) : (
+          <div>
+            <button 
+              onClick={() => setActiveComponent(null)}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#6c757d",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                marginBottom: "20px",
+                cursor: "pointer"
+              }}
+            >
+              Back to Dashboard
+            </button>
+            
+            {activeComponent === 'users' && <UserManagement />}
+            {activeComponent === 'appointments' && <AppointmentManagement />}
+            {activeComponent === 'analytics' && <SystemAnalytics />}
+            {activeComponent === 'services' && <ServiceManagement />}
+          </div>
+        )}
 
-      <div style={{ marginTop: "30px" }}>
-        <Link to="/" style={{
-          padding: "10px 20px",
-          backgroundColor: "#db2612ff",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "4px"
-        }}>
-          Logout
-        </Link>
+        <div style={{ marginTop: "30px" }}>
+          <Link to="/" style={{
+            padding: "10px 20px",
+            backgroundColor: "#db2612ff",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px"
+          }}>
+            Logout
+          </Link>
+        </div>
       </div>
-    </div>
-  );
+    );
 }

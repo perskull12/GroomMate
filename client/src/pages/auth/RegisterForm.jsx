@@ -14,7 +14,7 @@ const userSchema = z.object({
     confirmPassword:z.string().min(8, "Confirm password must same as Password"),
     adminCode:z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Paawords must match",
+    message: "Passwords must match",
     path: ["confirmPassword"],
 });
 

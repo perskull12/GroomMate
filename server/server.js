@@ -491,14 +491,23 @@ app.get('/reviews', (req, res) => {
 });
 
 app.get('/notifications', (req, res) => {
-    // For demo, fetch all appointments. For real use, filter by user.
-    db.query("SELECT * FROM appointments ORDER BY id DESC", (err, results) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ error: "Username is required" });
+    }
+
+    const sql = "SELECT * FROM appointments WHERE username = ? ORDER BY id DESC";
+
+    db.query(sql, [username], (err, results) => {
         if (err) {
+            console.error("MySQL Error:", err);
             return res.status(500).json({ error: "Database error" });
         }
         res.json(results);
     });
 });
+
 
 // updates status
 app.patch('/notifications/:id', (req, res) => {

@@ -21,28 +21,40 @@ export default function Notifications() {
 };
 
     const fetchReceipts = async () => {
-        try {
-            const res = await axios.get("http://localhost:8081/notifications");
-            setReceipts(res.data);
-            setUnread(res.data.filter(r => r.status === "pending").length);
-        } catch {
+    try {
+        const username = localStorage.getItem("username"); // Retrieve stored username from login
+        if (!username) {
+            console.error("No username found in localStorage");
             setReceipts([]);
+            return;
         }
-    };
 
-    useEffect(() => {
-        fetchReceipts();
-    }, []);
+        const res = await axios.get("http://localhost:8081/notifications", {
+            params: { username } // Send username as query param
+        });
 
-    const handleUpdate = async (id) => {
-        await axios.patch(`http://localhost:8081/notifications/${id}`);
-        fetchReceipts();
-    };
+                setReceipts(res.data);
+                setUnread(res.data.filter(r => r.status === "pending").length);
+            } catch (error) {
+                console.error("Error fetching receipts:", error);
+                setReceipts([]);
+            }
+        };
 
-    const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:8081/notifications/${id}`);
-        fetchReceipts();
-    };
+        useEffect(() => {
+            fetchReceipts();
+        }, []);
+
+        const handleUpdate = async (id) => {
+            await axios.patch(`http://localhost:8081/notifications/${id}`);
+            fetchReceipts();
+        };
+
+        const handleDelete = async (id) => {
+            await axios.delete(`http://localhost:8081/notifications/${id}`);
+            fetchReceipts();
+        };
+
 
     return (
         <>

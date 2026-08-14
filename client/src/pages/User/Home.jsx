@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
 import NavComponent from "./NavComponent";
+import About from "./About";
 import "./Home.css"
+import "./Review"
 
 export default function Home() {
     const [showBooking, setShowBooking] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showAbout, setShowAbout] = useState(false);
     const [error, setError] = useState(null);
     const [form, setForm] = useState({
         date: "",
@@ -25,6 +28,23 @@ export default function Home() {
      useEffect(() => {
         fetchServices();
     }, []);
+
+   {/*  useEffect(() => {
+        const handleScroll = () => {
+        const scrollTop = window.scrollY; 
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+
+        // Check if user reached bottom
+        if (scrollTop + windowHeight >= docHeight - 5) {
+            setShowAbout(true);
+        }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll); // cleanup
+  }, []); */}
+    
 
     const fetchServices = async () => {
         try {
@@ -229,7 +249,7 @@ export default function Home() {
                     </div>
                 ) : (
                     <div className="services-grid" style={{
-                        display: 'grid',
+                        display: 'flex',
                         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                         gap: '2rem',
                         padding: '1rem'
@@ -344,6 +364,7 @@ export default function Home() {
                     </div>
                 )}
             </div>
+                    <About />
         </>
     );
 }

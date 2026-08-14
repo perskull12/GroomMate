@@ -5,7 +5,7 @@ const mpesaConfig = {
     consumerSecret: 'yLrxEUFMjNSVuERcXpfItAXeV9unsOKnLmwniBIxvanbdxWGeP6QfIOe9eTnYuSX',
     passkey: 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
     shortcode: '174379',
-    callbackUrl:'https://7946d577d3b4.ngrok-free.app/api/booking/callback'
+    callbackUrl:'https://3af1de8e1d80.ngrok-free.app/api/booking/callback'
 };
 
 const getOAuthToken = async () => {
