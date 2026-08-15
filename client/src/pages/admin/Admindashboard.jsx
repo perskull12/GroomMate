@@ -5,6 +5,11 @@ import AppointmentManagement from "./AppointmentManagement";
 import SystemAnalytics from './SystemAnalytics';
 import ServiceManagement from './ServiceManagement'
 import Header from "../User/Header";
+//icons
+import { FaUsers } from "react-icons/fa";
+import { FaCalendar } from "react-icons/fa";
+import { FaServer } from "react-icons/fa";
+import { SiGoogleanalytics } from "react-icons/si";
 
 function AdminCard({ title, icon, onClick }) {
   return (
@@ -38,19 +43,19 @@ function AdminCard({ title, icon, onClick }) {
 
 // Simple icon components
 function UsersIcon() {
-  return <span>👥</span>;
+  return <span><FaUsers /></span>;
 }
 
 function CalendarIcon() {
-  return <span>📅</span>;
+  return <span><FaCalendar /></span>;
 }
 
 function GraphIcons() {
-  return <span>📊</span>;
+  return <span><SiGoogleanalytics /></span>;
 }
 
 function ServiceIcon() {
-  return <span>✂️</span>;
+  return <span><FaServer /></span>;
 }
 
 
